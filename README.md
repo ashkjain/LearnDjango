@@ -27,3 +27,46 @@ Also you have to configure that, so in same file under urlpatters you will add y
 path('path/to/config,function),
 ```
 
+6. The best thing to do for the app, create a new urls.py file in your app folder so you can avoid creating a mess and make it more complicated. We will declare our routes in that file. Import these modules in this file:-
+```
+from django.urls import path # This is to configure paths or routes
+from . import views # This will help us to receive views from the views.py file which exists in the same directory.
+
+urlpatterns[
+    path('path/',views.function, name="function") # This name will specify the name of the route(Not absolute path)
+]
+```
+For the functions we will declare them in views.py file and we will call functions from this file to urls.py file in routes:-
+```
+def function(request):
+    return (Whatever you wanna return)
+```
+7. Now we have to configure our app views to the main root views. In order to do that we need to import a module in our root urls.py file:-
+```
+from django.urls import include
+
+# And the route will look something like this:-
+
+urlpatterns = [
+    path('admin/', admin.site.urls), # This is default, leave it the way it is
+    path('path/', include('nameOfApp.urls'))
+]
+```
+So after doing this our app urls routes will take of the routing.
+
+8. Now to create templates or dynamic files, we will create a new folder in our root directory named: templates. We also have to configure this folder, by going in the main project folder in settings.py in TEMPLATES in  DIRS we will add template:-
+```
+TEMPLATES = [
+    {
+        'DIRS':[
+            BASE_DIR / 'templates'
+        ]
+    }
+]
+```
+Now we can go to our apps views and render templates
+
+```
+def function(request):
+    return render(request, 'templateName.html') # This is how you will pass template in the view and these two are required paraemeters. 
+```
