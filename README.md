@@ -139,3 +139,12 @@ home.html
 {% endfor %}
 ```
 This templating will allow to use the variable which is passed as 3rd argumnent, and can be used inside the template using for loop. *Make sure to end the for loop, in templating engine you have to end certain logical conditions.
+
+11. To manage template more easily we can create a directory inside our app called templates and one nested directory named as same as the app name. And we can move everything except files that will remain constant, like main.hhtml and navbar.html page. And we have to make a few changes to configure it, in the views.py where we specify the name of the template just put appName/template.html. For ex:
+views.py
+```
+def home(request):
+    return render(request, 'appname/home.html')
+```
+
+12. Dynamic URL Routing:
