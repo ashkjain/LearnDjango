@@ -70,3 +70,72 @@ Now we can go to our apps views and render templates
 def function(request):
     return render(request, 'templateName.html') # This is how you will pass template in the view and these two are required paraemeters. 
 ```
+
+9. Now we are able to render pages, we can now use template engine to create some dynamic content without calling the same information again and again. For example: In an application we have a navbar, instead of calling it again and again we might just create a main.html file and put boilerplate code in it, and work just call it inside of our other pages. Create three files: main.html, home.html, contact.html, navbar.html.
+
+navbar.html
+```
+<nav>
+    <a href="/">Home</a>
+    <a href="/contact">Contact</a>
+</nav>
+```
+main.html
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBud</title>
+</head>
+<body>
+
+    {% include 'navbar.html' %}
+
+    {% block content %}
+
+    {% endblock %}
+</body>
+</html>
+```
+home.html
+```
+{% extends 'main.html' %}
+{% block content %}
+<h1> This is the home page </h1>
+{% endblock content %}
+```
+contact.html
+```
+{% extends 'main.html' %}
+{% block content %}
+<h1> This is the contact page </h1>
+{% endblock content %}
+```
+So, in this example we created a block inside main.html and before block we included navbar.html. When we work on another pages we just have to extend the main.html and but all the html content inside the block content, this is being done by Django Template Engine, and this will help to create dynamic content.
+
+10. We can pass in variables inside our routes and we can use those variables inside the template they are reffereing to. For example we have one route home and we are passing list inside and then using it, and iterating it:
+
+views.py
+```
+learn = [
+    {'chapter':1, 'name':'Basic Python'},
+    {'chapter':2, 'name':'Python with OOP'},
+    {'chapter':3, 'name':'Python Backend with Django'},
+]
+def home(request):
+    context = {'books':learn}
+    return render(request, 'home.html',context)
+```
+home.html
+```
+{% for book in books %}
+
+<div>
+    <h2>Book Id: {{book.chapter}} -- Book Name: {{book.name}}</h2>
+</div>
+
+{% endfor %}
+```
+This templating will allow to use the variable which is passed as 3rd argumnent, and can be used inside the template using for loop. *Make sure to end the for loop, in templating engine you have to end certain logical conditions.
